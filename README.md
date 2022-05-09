@@ -4,7 +4,7 @@ In this challenge, they propose that I take the role of a new data scientist hir
 
 For the first week, the goal is to identify clients who are more likely to leave the company, afterwards the idea is to optimize the models to guide the decision-making for the Alura Voz.
 
-# The Churn Profile
+## The Churn Profile
 
 New clients are more likely to churn than old clients.
 
