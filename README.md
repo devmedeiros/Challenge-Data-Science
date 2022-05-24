@@ -1,3 +1,7 @@
+# Table of Contents
+- [Challenge Data Science](#challenge-data-science)
+  * [The Churn Profile](#the-churn-profile)
+
 # Challenge Data Science
 
 In this challenge, they propose that I take the role of a new data scientist hired at Alura Voz. This made-up company is in the phone industry and it needs to reduce the Churn Rate.
