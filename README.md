@@ -18,6 +18,7 @@
   * [Baseline](#baseline)
   * [Model 1](#model-1)
   * [Model 2](#model-2)
+  * [Model 3](#model-3)
   * [Conclusion](#conclusion)
 
 # Challenge Data Science
@@ -83,31 +84,31 @@ The feature `SeniorCitizen` was the only one that came with `0` and `1` instead 
 
 ## Data Analysis
 
-In the first plot we can see how much unbalanced our data set is. There're over 5000 clients that didn't leave the company and a little less than 2000 that left.
+In the first plot, we can see how much unbalanced our data set is. There're over 5000 clients that didn't leave the company and a little less than 2000 that left.
 
-<!---
-![bar plot with two bars, the first one is for 'no' and the second is for 'yes', the first bar is over 5000 count and the second one is around 2000]()
---->
+<p align="center">
+  <img src="https://github.com/devmedeiros/Challenge-Data-Science/blob/main/2%20-%20Second%20Week/churn_count.jpg?raw=true" alt="bar plot with two bars, the first one is for 'no' and the second is for 'yes', the first bar is over 5000 count and the second one is around 2000">
+</p>
 
 I also generated 16 plots for all the discrete data. I wanted to see if there was any behavior that made some clients more likely to leave the company.
 
-Is easy to see that all, except for `gender`, seems to play a role in determining if a client will leave the company or not. More especifically payment methods, contract, online backup, tech support, and internet service.
+Is easy to see that all, except for `gender`, seems to play a role in determining if a client will leave the company or not. More specifically payment methods, contracts, online backup, tech support, and internet service.
 
-<!---
-![there are 16 bar plots in the image showing how each feature is correlated with the churn rate]()
---->
+<p align="center">
+  <img src="https://github.com/devmedeiros/Challenge-Data-Science/blob/main/2%20-%20Second%20Week/categorical_churn.jpg?raw=true" alt="there are 16 bar plots in the image showing how each feature is correlated with the churn rate">
+</p>
 
-In the `tenure` plot, I decided to make a distribution plot for the tenure, one plot for clients that didn't churn and clients that did churn. We can see that clients that left the company tend do so at the beginning of their time in te company.
+In the `tenure` plot, I decided to make a distribution plot for the tenure, one plot for clients that didn't churn and clients that did churn. We can see that clients that left the company tend to do so at the beginning of their time in the company.
 
-<!---
-![there two plots side-by-side, in the first one the title is 'Churn = No' the data is along the tenure line and is in a U shape. the second plot has the title 'Churn = Yes' and starts high and drops fast along the tenure line]()
----> 
+<p align="center">
+  <img src="https://github.com/devmedeiros/Challenge-Data-Science/blob/main/2%20-%20Second%20Week/tenure_churn.jpg?raw=true" alt="there two plots side-by-side, in the first one the title is 'Churn = No' the data is along the tenure line and is in a U shape. the second plot has the title 'Churn = Yes' and starts high and drops fast along the tenure line">
+</p>
 
-The average monthly charges for clients that didn't churn is 61.27 monetary units, while clients that churn were paying 74.44. This is probably because of the type of contract they prefer, but either way, is known that higher prices drive customer away.
+The average monthly charge for clients that didn't churn is 61.27 monetary units, while clients that churn were paying 74.44. This is probably because of the type of contract they prefer, but either way, is known that higher prices drive the customer away.
 
 ## The Churn Profile
 
-Condensating everything that I could see throu plots and measures I came up with a profile for clients that are more likely to churn.
+Considering everything that I could see through plots and measures I came up with a profile for clients that are more likely to churn.
 
 - New clients are more likely to churn than older clients.
 
@@ -119,10 +120,63 @@ Condensating everything that I could see throu plots and measures I came up with
 
 ## Preparing the dataset
 
+We start by making dummies variables dropping the first, so we would have n-1 dummies for n categories. Then we move on to look at features correlation.
+
+<p align="center">
+  <img src="https://github.com/devmedeiros/Challenge-Data-Science/blob/main/3%20-%20Third%20Week/corr_matrix.png?raw=true" alt="correlation matrix with all the features">
+</p>
+
+We can see that the `InternetService_No` feature has a lot of strong correlations with many other features, this is because these other features depend on the client having internet service. So I'll drop all features that are dependent on this one. The same thing happens with `PhoneService_Yes`.
+
+`tenure` and `ChargesTotal` also have a strong correlation, but I'll run the models with these two, as I think they are both relevant.
+
+After dropping these features I move on to normalize the numeric data, `ChargesTotal` and `tenure`.
+
 ## Baseline
 
-## Model 1
+I made the baseline model using a dummy classifier that guessed that every client behaved the same. It is always guessed that no client will leave the company. By using this approach we got a baseline accuracy score of `0.73456`. I'll use this to compare the following models.
 
-## Model 2
+All models moving forward will have the same random state.
+
+## Model 1 - Random Forest
+
+I start by using a grid search with cross-validation to find the best parameters within a given pool of options. The best model was:
+
+```python
+RandomForestClassifier(max_depth=15, max_leaf_nodes=75, random_state=22)
+```
+
+After fitting this model, the accuracy score was `0.78282`.
+
+## Model 2 - Linear SVC
+
+For this model, I just used the default parameters.
+
+```python
+LinearSVC(random_state=22)
+```
+
+After fitting, it got an accuracy score of `0.78992`. 
+
+## Model 3 - Multi-layer Perceptron
+
+Here I fixed the solver to LBFGS and used grid search with cross-validation to find a hidden layer size that would be the best. The best model was:
+
+```python
+MLPClassifier(hidden_layer_sizes=(1,), max_iter=9999, random_state=22, solver='lbfgs')
+```
+
+After fitting its accuracy score was `0.79489`.
 
 ## Conclusion
+
+| **Model** | **Acc Score** | **Improvement** |
+|-----------|:-------------:|:---------------:|
+| Baseline  |    0.73456    |        -        |
+| Model 1   |    0.78282    |      6.57%      |
+| Model 2   |    0.78992    |      7.54%      |
+| Model 3   |    0.79489    |      8.21%      |
+
+I ran three models, all of them using the same `random_state`. The first model was a random forest, with `max_depth = 15` and`max_leaf_nodes = 75`. I used grid search with cross-validation on some random parameters to find this combination. The second model is a simple linear SVC. And lastly, the third model is a neural network with a multi-layer perceptron, in this case, I also used a grid search with cross-validation with LBFGS solver (because of the small dataset) and some random hidden layer sizes. In the end, the MLP had a `hidden_layer_sizes=(1,)`, `solver='lbfgs'` and I set the `max_iter = 9999`.
+
+Even though all the models outperformed the baseline, the best model was the MLP with an 8.21% accuracy increase, compared to the baseline.
