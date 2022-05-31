@@ -180,3 +180,7 @@ After fitting its accuracy score was `0.79489`.
 I ran three models, all of them using the same `random_state`. The first model was a random forest, with `max_depth = 15` and`max_leaf_nodes = 75`. I used grid search with cross-validation on some random parameters to find this combination. The second model is a simple linear SVC. And lastly, the third model is a neural network with a multi-layer perceptron, in this case, I also used a grid search with cross-validation with LBFGS solver (because of the small dataset) and some random hidden layer sizes. In the end, the MLP had a `hidden_layer_sizes=(1,)`, `solver='lbfgs'` and I set the `max_iter = 9999`.
 
 Even though all the models outperformed the baseline, the best model was the MLP with an 8.21% accuracy increase, compared to the baseline.
+
+# Fourth Week
+
+For the last week we're meant to work in the portfolio and storytelling. I wrote a blog post on my website that you can read more about [here](https://bit.ly/38vJKUG).
