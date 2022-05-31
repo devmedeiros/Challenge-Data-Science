@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/devmedeiros/Challenge-Data-Science/main/aluravoz.png" alt="heart with an A inside and you can read 'Alura Voz telecommunication company'">
 </p>
 
-![status - under development](https://img.shields.io/badge/status-under_development-2ea44f)
+![status - completed](https://img.shields.io/badge/status-completed-2ea44f)
 
 # Table of Contents
 - [Challenge Data Science](#challenge-data-science)
