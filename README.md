@@ -20,6 +20,7 @@
   * [Model 2 - Linear SVC](#model-2---linear-svc)
   * [Model 3 - Multi-layer Perceptron](#model-3---multi-layer-perceptron)
   * [Conclusion](#conclusion)
+ - [Fourth Week](#fourth-week)
 
 # Challenge Data Science
 
@@ -183,4 +184,4 @@ Even though all the models outperformed the baseline, the best model was the MLP
 
 # Fourth Week
 
-For the last week we're meant to work in the portfolio and storytelling. I wrote a blog post on my website that you can read more about [here](https://bit.ly/38vJKUG).
+For the last week we're meant to work in the portfolio and storytelling. I wrote a blog post on my website that you can read more about it [here](https://bit.ly/38vJKUG).
