@@ -15,6 +15,7 @@
   * [The Churn Profile](#the-churn-profile)
 - [Third Week](#third-week)
   * [Preparing the dataset](#preparing-the-dataset)
+  * [Model Evaluation](#model-evaluation)
   * [Baseline](#baseline)
   * [Model 1 - Random Forest](#model-1---random-forest)
   * [Model 2 - Linear SVC](#model-2---linear-svc)
