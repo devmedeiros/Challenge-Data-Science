@@ -1,47 +1,55 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/devmedeiros/Challenge-Data-Science/main/aluravoz.png" alt="heart with an A inside and you can read 'Alura Voz telecommunication company'">
-</p>
+![heart with an A inside and you can read 'Alura Voz telecommunication company'](https://raw.githubusercontent.com/devmedeiros/Challenge-Data-Science/main/aluravoz.png#vitrinedev)
 
-![status - completed](https://img.shields.io/badge/status-completed-2ea44f)
+![status - completado](https://img.shields.io/badge/status-completed-2ea44f)
 
-# Table of Contents
+> This README is also available in [English](https://github.com/devmedeiros/Challenge-Data-Science/blob/main/README_en.md)!
+
+| :placard: Vitrine.Dev |     |
+| -------------  | --- |
+| :sparkles: Nome        | **Challenge Data Science**
+| :label: Tecnologias | Python, Machine Learning, Data Science
+| :rocket: URL         | https://bit.ly/38vJKUG
+| :fire: Desafio     | https://www.alura.com.br/challenges/data-science/
+
+
+# Sumário
 - [Challenge Data Science](#challenge-data-science)
-- [First Week](#first-week)
-  * [Reading the dataset](#reading-the-dataset)
-  * [Missing data](#missing-data)
+- [Primeira Semana](#primeira-semana)
+  * [Lendo os dados](#lendo-os-dados)
+  * [Dados faltantes](#dados-faltantes)
   * [Feature Encoding](#feature-encoding)
-- [Second Week](#second-week)
-  * [Data Analysis](#data-analysis)
-  * [The Churn Profile](#the-churn-profile)
-- [Third Week](#third-week)
-  * [Preparing the dataset](#preparing-the-dataset)
-  * [Model Evaluation](#model-evaluation)
-  * [Baseline](#baseline)
-  * [Model 1 - Random Forest](#model-1---random-forest)
-  * [Model 2 - Linear SVC](#model-2---linear-svc)
-  * [Model 3 - Multi-layer Perceptron](#model-3---multi-layer-perceptron)
-  * [Conclusion](#conclusion)
- - [Fourth Week](#fourth-week)
+- [Segunda Semana](#segunda-semana)
+  * [Análise de Dados](#an-lise-de-dados)
+  * [O Perfil de Evasão](#o-perfil-de-evas-o)
+- [Terceira Semana](#terceira-semana)
+  * [Preparando os dados](#preparando-os-dados)
+  * [Avaliação dos modelos](#avalia--o-dos-modelos)
+  * [Modelo base](#modelo-base)
+  * [Modelo 1 - Floresta Aleatória](#modelo-1---floresta-aleat-ria)
+  * [Modelo 2 - Linear SVC](#modelo-2---linear-svc)
+  * [Modelo 3 - Multi-layer Perceptron](#modelo-3---multi-layer-perceptron)
+  * [Conclusão](#conclus-o)
+- [Quarta Semana](#quarta-semana)
 
 # Challenge Data Science
 
-I was challenged to take the role of a new data scientist hired at Alura Voz. This made-up company is in the phone industry and it needs to reduce the Churn Rate.
+O desafio consiste em assumir o papel de um novo cientista de dados contratado na Alura Voz. Essa empresa fictícia está no setor de telefonia e precisa reduzir a taxa de evasão, também chamada de _Churn Rate_.
 
-For the first week, the goal is to clean the dataset provided by an API. Next, we need to identify clients who are more likely to leave the company, using data analysis, afterwards the idea is to use machine learning models to predict the churn rate and guide the decision-making process for Alura Voz.
+Na primeira semana, o objetivo é limpar o conjunto de dados fornecido por uma API. Em seguida, precisamos identificar os clientes com maior probabilidade de sair da empresa, usando análise de dados, depois a ideia é usar modelos de aprendizado de máquina para prever a taxa de evasão e orientar o processo de tomada de decisão da Alura Voz.
 
-# First Week
+# Primeira Semana
 
-## Reading the dataset
+## Lendo os dados
 
-The dataset is available in a JSON file, at first glance it looked like a normal table.
+O conjunto de dados está disponível em um arquivo JSON, à primeira vista parecia uma tabela normal.
 
 ![first five elements of the dataframe](https://raw.githubusercontent.com/devmedeiros/Challenge-Data-Science/main/1%20-%20Data%20Cleaning/table_head.png)
 
-But, as we can see, `customer`, `phone`, `internet`, and `account` are their separate tables. So I had to normalize them separately and then I just concatenated all these tables into one.
+Mas, como podemos ver, `customer`, `phone`, `internet` e `account` são tabelas próprias no formato JSON. Então é necessário normalizá-las separadamente e depois concatenar todas essas tabelas em uma.
 
-## Missing data
+## Dados faltantes
 
-The first time I looked for missing data in our dataset I notice that apparently, that wasn't anything missing, but later on, I noticed that there was empty space and just space not being counted as `NaN`. So I corrected this, and now the dataset had 224 missing values for `Churn` and 11 missing for `Charges.Total`.
+A primeira vez que procurei por dados faltantes no conjunto de dados, notei que, aparentemente, não havia nada faltando, mas ao investigar mais profundamente percebi que havia espaço vazio e também apenas ` ` espaço não sendo contado como `NaN`. Então eu corrigi isso, e agora o conjunto de dados tinha 224 valores ausentes para `Churn` e 11 faltantes para `Charges.Total`.
 
 ```
 customerID            0
@@ -68,124 +76,122 @@ Charges.Total        11
 dtype: int64
 ```
 
-I decided to drop the missing `Churn` because this is going to be the object of our study and there isn't a point in studying something that doesn't exist. For the missing `Charges.Total`, I think it represents a customer that hasn't paid anything yet, so I just replaced the missing value for 0.
+Resolvi deixar de lado o `Churn` que faltava porque este será o objeto de nosso estudo e não adianta estudar algo que não existe. Para o `Charges.Total` ausente, acredito que representa um cliente que ainda não pagou nada, então apenas substituí o valor ausente por 0.
 
 ## Feature Encoding
 
-The feature `SeniorCitizen` was the only one that came with `0` and `1` instead of `Yes` and `No`. For now, I'm changing it to yes and no, because it'll make the analysis simpler to read.
+O recurso `SeniorCitizen` foi o único que veio com `0` e `1` em vez de `Yes` e `No`. Por enquanto, estou alterando para `Yes` e `No`, porque facilitará a leitura da análise.
 
-`Charges.Monthly` and `Charges.Total` were renamed to lose the dot because the dot gets in the way when calling the feature.
+# Segunda Semana
 
-# Second Week
+## Análise de Dados
 
-## Data Analysis
-
-In the first plot, we can see how much unbalanced our data set is. There're over 5000 clients that didn't leave the company and a little less than 2000 that left.
+No primeiro gráfico, podemos ver o quanto nosso conjunto de dados está desbalanceado. São mais de 5.000 clientes que não saíram da empresa e pouco menos de 2.000 que saíram.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/devmedeiros/Challenge-Data-Science/main/2%20-%20Data%20Analysis/churn.jpg" alt="bar plot with two bars, the first one is for 'no' and the second is for 'yes', the first bar is over 5000 count and the second one is around 2000">
 </p>
 
-I also generated 16 plots for all the discrete data. I wanted to see if there was any behavior that made some clients more likely to leave the company. To see all the plots look at the [notebook](https://github.com/devmedeiros/Challenge-Data-Science/blob/main/2%20-%20Data%20Analysis/data_analysis.ipynb) from `2 - Data Analysis`.
+Também gerei 16 gráficos para todos os dados discretos. Eu queria ver se havia algum comportamento que tornasse alguns clientes mais propensos a deixar a empresa. Para ver todos os gráficos veja o [notebook](https://github.com/devmedeiros/Challenge-Data-Science/blob/main/2%20-%20Data%20Analysis/data_analysis.ipynb) da pasta `2 - Data Analysis`.
 
-Is easy to see that all, except for `gender`, seems to play a role in determining if a client will leave the company or not. More specifically payment methods, contracts, online backup, tech support, and internet service.
+É fácil ver que todos, exceto o `gender`, parecem ter um papel em determinar se um cliente deixará a empresa ou não. Mais especificamente, métodos de pagamento, contratos, backup online, suporte técnico e serviço de internet.
 
-In the `tenure` plot, I decided to make a distribution plot for the tenure, one plot for clients that didn't churn and clients that did churn. We can see that clients that left the company tend to do so at the beginning of their time in the company.
+No gráfico de `tenure`, decidi fazer um gráfico de distribuição para a `tenure`, um gráfico para clientes que não deixaram a empresa e um para clientes que deixaram. Podemos ver que os clientes que deixaram a empresa tendem a fazê-lo no início de seu tempo na empresa.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/devmedeiros/Challenge-Data-Science/main/2%20-%20Data%20Analysis/tenure.jpg" alt="there two plots side-by-side, in the first one the title is 'Churn = No' the data is along the tenure line and is in a U shape. the second plot has the title 'Churn = Yes' and starts high and drops fast along the tenure line">
 </p>
 
-The average monthly charge for clients that didn't churn is 61.27 monetary units, while clients that churn were paying 74.44. This is probably because of the type of contract they prefer, but either way, is known that higher prices drive the customer away.
+A mensalidade média dos clientes que não se desligaram é de 61,27 unidades monetárias, enquanto os clientes que se desligaram pagavam 74,44. Isso provavelmente se deve ao tipo de contrato que eles escolheram, mas de qualquer forma, sabe-se que preços mais altos afastam o cliente.
 
-## The Churn Profile
+## O Perfil de Evasão
 
-Considering everything that I could see through plots and measures I came up with a profile for clients that are more likely to churn.
+Considerando tudo o que pude ver através de parcelas e medidas, criei um perfil para clientes com maior probabilidade de evasão.
 
-- New clients are more likely to churn than older clients.
+- Novos clientes são mais propensos a evadir do que clientes mais antigos.
 
-- Customers that use fewer services and products tend to leave the company. Also, when they aren't tied down to a longer contract they seem to be more likely to quit.
+- Clientes que utilizam menos serviços e produtos tendem a deixar a empresa. Além disso, quando não estão vinculados a um contrato mais longo, parecem mais propensos a desistir.
 
-- Regarding the payment method, clients that churn have a **strong** preference for electronic checks and usually are spending 13.17 monetary units more than the average client that didn't leave.
+- Em relação à forma de pagamento, os clientes que saem têm uma preferência **forte** por cheques eletrônicos e costumam gastar 13,17 unidades monetárias a mais do que o cliente médio que não saiu.
 
-# Third Week
+# Terceira Semana
 
-## Preparing the dataset
+## Preparando os dados
 
-We start by making dummies variables dropping the first, so we would have n-1 dummies for n categories. Then we move on to look at features correlation.
+Começamos fazendo variáveis _​​dummies_ descartando a primeira, então teríamos n-1 _dummies_ para n categorias. Em seguida, passamos a observar a correlação de _features_.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/devmedeiros/Challenge-Data-Science/main/3%20-%20Model%20Selection/corr_matrix.jpg" alt="correlation matrix with all the features">
 </p>
 
-We can see that the `InternetService_No` feature has a lot of strong correlations with many other features, this is because these other features depend on the client having internet service. So I'll drop all features that are dependent on this one. The same thing happens with `PhoneService_Yes`.
+Podemos ver que a _feature_ `InternetService_No` tem muitas correlações fortes com muitos outros recursos, porque esses outros recursos dependem do cliente ter serviço de internet. Então, vou descartar todos os recursos que dependem disso. A mesma coisa acontece com `PhoneService_Yes`.
 
-`tenure` and `ChargesTotal` also have a strong correlation, but I'll run the models with these two, as I think they are both relevant.
+`tenure` e `ChargesTotal` também possuem uma forte correlação, mas vou executar os modelos com esses dois, pois acho que ambos são relevantes.
 
-After dropping these features I move on to normalize the numeric data, `ChargesTotal` and `tenure`.
+Depois de descartar esses recursos, sigo com a normalização dos dados numéricos, `ChargesTotal` e `tenure`.
 
-Because the dataset is so imbalanced, after splitting the dataset between training and testing sets, I'll oversample the training set using the SMOTE technique.
+Como o conjunto de dados é desequilibrado, depois de dividir o conjunto de dados entre os conjuntos de treinamento e teste, farei uma superamostragem do conjunto de treinamento usando a técnica SMOTE.
 
-## Model Evaluation
+## Avaliação dos modelos
 
-I'll use a dummy classifier to have a baseline model for the accuracy score, and I'll also use the metrics: `precision`, `recall` and `f1 score`. Although the dummy model won't have values for this metrics, I'll keep it for comparison on how much the models improved.
+Usarei um classificador _dummy_ para ter um modelo de base (também chamado de _baseline_) para a pontuação de acurácia e também usarei as métricas: `precisão`, `recall` e `pontuação f1`. Embora o modelo _dummy_ não tenha valores para essas métricas, vou mantê-lo para comparação de quanto os modelos melhoraram.
 
-## Baseline
+## Modelo base
 
-I made the baseline model using a dummy classifier that guessed that every client behaved the same. It is always guessed that no client will leave the company. By using this approach we got a baseline accuracy score of `0.73456`.
+Eu fiz o modelo baseline usando um classificador _dummy_ que adivinhou que todos os clientes se comportavam da mesma forma. Supõe-se sempre que nenhum cliente sairá da empresa. Ao usar essa abordagem, obtivemos uma pontuação de acurácia de `0,73456`.
 
-All models moving forward will have the same random state.
+Todos os modelos que avançam terão o mesmo estado aleatório.
 
-## Model 1 - Random Forest
+## Modelo 1 - Floresta Aleatória
 
-I start by using a grid search with cross-validation to find the best parameters within a given pool of options using the `recall` as the strategy to evaluate the performance. The best model was:
+Começo usando _grid search_ com validação cruzada para encontrar os melhores parâmetros dentro de um determinado conjunto de opções usando o `recall` como estratégia para avaliar o desempenho. O melhor modelo foi:
 
 ```python
 RandomForestClassifier(criterion='entropy', max_depth=5, max_leaf_nodes=70, random_state=22)
 ```
 
-After fitting this model, the evaluating metrics were:
-- Accuracy Score: 0.72534 
-- Precision Score: 0.48922 
-- Recall Score: 0.78877 
-- F1 Score: 0.60389
+Depois de ajustar este modelo, as métricas de avaliação foram:
+- Pontuação de acurácia: 0,72534
+- Pontuação de precisão: 0,48922
+- Pontuação de recall: 0,78877
+- Pontuação F1: 0,60389
 
-## Model 2 - Linear SVC
+## Modelo 2 - Linear SVC
 
-For this model, I just used the default parameters and set the ceiling for the maximum of iterations to `900000`.
+Para este modelo, usei apenas os parâmetros padrão e defini o teto para o máximo de iterações para `900000`.
 
 ```python
 LinearSVC(max_iter=900000, random_state=22)
 ```
 
-After fitting this model, the evaluating metrics were:
-- Accuracy Score: 0.71966 
-- Precision Score: 0.48217 
-- Recall Score: 0.75936 
-- F1 Score: 0.58982
+Depois de ajustar este modelo, as métricas de avaliação foram:
+- Pontuação de acurácia: 0,71966
+- Pontuação de precisão: 0,48217
+- Pontuação de recall: 0,75936
+- Pontuação F1: 0,58982
 
-## Model 3 - Multi-layer Perceptron
+## Modelo 3 - Multi-layer Perceptron
 
-Here I fixed the solver to LBFGS and used grid search with cross-validation to find a hidden layer size that would be the best. The best model was:
+Aqui eu fixei o _solver_ para LBFGS e usei a _grid search_ com validação cruzada para encontrar um tamanho de camada oculta que seria o melhor. O melhor modelo foi:
 
 ```python
 MLPClassifier(hidden_layer_sizes=(1,), max_iter=9999, random_state=22, solver='lbfgs')
 ```
 
-After fitting this model, the evaluating metrics were:
-- Accuracy Score: 0.72818 
-- Precision Score: 0.49133 
-- Recall Score: 0.68182 
-- F1 Score: 0.57111
+Depois de ajustar este modelo, as métricas de avaliação foram:
+- Pontuação de acurácia: 0,72818
+- Pontuação de precisão: 0,49133
+- Pontuação de recall: 0,68182
+- Pontuação F1: 0,57111
 
-## Conclusion
+## Conclusão
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/devmedeiros/Challenge-Data-Science/main/3%20-%20Model%20Selection/results_table.png" alt="results table">
 </p>
 
-I ran three models, all of them using the same `random_state`. The first model was a random forest, with `max_depth = 5` and `max_leaf_nodes = 70`. I used grid search with cross-validation on some random parameters to find this combination and `recall` as the evaluating strategy for the cross-validation. The second model is a simple linear SVC. And lastly, the third model is a neural network with a multi-layer perceptron, in this case, I also used a grid search with cross-validation with LBFGS solver (because of the small dataset) on some random hidden layer sizes and `recall` as the evaluating strategy for the cross-validation. In the end, the Random Forest had the best metrics overall.
+Eu rodei três modelos, todos eles usando o mesmo `random_state`. O primeiro modelo foi uma floresta aleatória, com `max_depth = 5` e `max_leaf_nodes = 70`. Eu usei _grid search_ com validação cruzada em alguns parâmetros aleatórios para encontrar essa combinação e `recall` como a estratégia de avaliação para a validação cruzada. O segundo modelo é um SVC linear simples. E por último, o terceiro modelo é uma rede neural com um perceptron multicamada, neste caso, também usei _grid search_ com validação cruzada com o _solver_ LBFGS em algumas camadas ocultas de tamanhos aleatórios e `recall ` como a estratégia de avaliação para a validação cruzada. No final, a Floresta Aleatória teve as melhores métricas em geral.
 
-# Fourth Week
+# Quarta Semana
 
-For the last week we're meant to work in the portfolio and storytelling. I wrote a blog post on my website that you can read more about it [here](https://bit.ly/38vJKUG).
+Na última semana, devemos trabalhar no portfólio e no _storytelling_ dos dados. Eu escrevi um post no meu site que você pode ler mais sobre isso [aqui](https://bit.ly/38vJKUG).
